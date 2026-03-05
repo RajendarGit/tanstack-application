@@ -1,9 +1,15 @@
 import { getImageUrl } from "#/helper/getImageUrl";
 import { roundToOneDecimal } from "#/helper/getRoundedValue";
+import { Link } from "@tanstack/react-router";
+import type { Movie } from "type";
 
-export default function MovieCard({ movie }: { movie: any }) {
+export default function MovieCard({ movie }: { movie: Movie }) {
   return (
-    <div className="shadow-xl border border-gray-100 rounded-2xl flex flex-col gap-4">
+    <Link
+      to="/movies/$id"
+      params={{ id: movie.id.toString() }}
+      className="shadow-xl border border-gray-100 rounded-2xl flex flex-col gap-4"
+    >
       <img
         src={getImageUrl(movie.poster_path)}
         alt={movie.title}
@@ -24,6 +30,6 @@ export default function MovieCard({ movie }: { movie: any }) {
             : movie.overview}
         </p>
       </div>
-    </div>
+    </Link>
   );
 }

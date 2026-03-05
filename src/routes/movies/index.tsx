@@ -1,9 +1,24 @@
-import MovieCard from "#/components/MovieCard";
-import { fetMovies } from "#/queries/fetMovies";
-import { useInfiniteQuery } from "@tanstack/react-query";
+// routes/movies/index.tsx
 import { createFileRoute } from "@tanstack/react-router";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import MovieCard from "#/components/MovieCard";
+import { fetchMovies } from "#/queries/fetMovies";
+import type { Movie } from "type";
+import { queryClient } from "#/helper/queryClient";
+import ContainerLayout from "#/components/ContainerLayout";
 
-export const Route = createFileRoute("/movies")({
+export const Route = createFileRoute("/movies/")({
+  loader: async () => {
+    // Prefetch the first page into React Query cache
+    await queryClient.prefetchInfiniteQuery({
+      queryKey: ["movies"],
+      queryFn: fetchMovies,
+      initialPageParam: 1,
+      getNextPageParam: (lastPage: Movie[], allPages: Movie[][]) =>
+        lastPage.length === 0 ? undefined : allPages.length + 1,
+    });
+    return {}; // loader must return something, even empty
+  },
   component: RouteComponent,
 });
 
@@ -11,15 +26,14 @@ function RouteComponent() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ["movies"],
-      queryFn: fetMovies,
+      queryFn: fetchMovies,
       initialPageParam: 1,
-      getNextPageParam: (lastPage, allPages) => {
-        // If API returns empty array, stop
-        return lastPage.length === 0 ? undefined : allPages.length + 1;
-      },
+      getNextPageParam: (lastPage, allPages) =>
+        lastPage.length === 0 ? undefined : allPages.length + 1,
     });
+
   return (
-    <div>
+    <ContainerLayout>
       {data?.pages.map((page, index) => (
         <div
           className="grid md:grid-cols-3 gap-3 lg:grid-cols-4 xl:grid-cols-4"
@@ -43,6 +57,6 @@ function RouteComponent() {
           <p>No more movies to load.</p>
         )}
       </div>
-    </div>
+    </ContainerLayout>
   );
 }

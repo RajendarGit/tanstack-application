@@ -9,24 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ProductsRouteImport } from './routes/products'
-import { Route as MoviesRouteImport } from './routes/movies'
-import { Route as AboutRouteImport } from './routes/about'
+import { Route as NotFoundRouteImport } from './routes/NotFound'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProductsIndexRouteImport } from './routes/products/index'
+import { Route as MoviesIndexRouteImport } from './routes/movies/index'
+import { Route as AboutIndexRouteImport } from './routes/about/index'
+import { Route as MoviesIdRouteImport } from './routes/movies/$id'
 
-const ProductsRoute = ProductsRouteImport.update({
-  id: '/products',
-  path: '/products',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MoviesRoute = MoviesRouteImport.update({
-  id: '/movies',
-  path: '/movies',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const NotFoundRoute = NotFoundRouteImport.update({
+  id: '/NotFound',
+  path: '/NotFound',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -34,62 +26,89 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductsIndexRoute = ProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviesIndexRoute = MoviesIndexRouteImport.update({
+  id: '/movies/',
+  path: '/movies/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutIndexRoute = AboutIndexRouteImport.update({
+  id: '/about/',
+  path: '/about/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviesIdRoute = MoviesIdRouteImport.update({
+  id: '/movies/$id',
+  path: '/movies/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/movies': typeof MoviesRoute
-  '/products': typeof ProductsRoute
+  '/NotFound': typeof NotFoundRoute
+  '/movies/$id': typeof MoviesIdRoute
+  '/about/': typeof AboutIndexRoute
+  '/movies/': typeof MoviesIndexRoute
+  '/products/': typeof ProductsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/movies': typeof MoviesRoute
-  '/products': typeof ProductsRoute
+  '/NotFound': typeof NotFoundRoute
+  '/movies/$id': typeof MoviesIdRoute
+  '/about': typeof AboutIndexRoute
+  '/movies': typeof MoviesIndexRoute
+  '/products': typeof ProductsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/movies': typeof MoviesRoute
-  '/products': typeof ProductsRoute
+  '/NotFound': typeof NotFoundRoute
+  '/movies/$id': typeof MoviesIdRoute
+  '/about/': typeof AboutIndexRoute
+  '/movies/': typeof MoviesIndexRoute
+  '/products/': typeof ProductsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/movies' | '/products'
+  fullPaths:
+    | '/'
+    | '/NotFound'
+    | '/movies/$id'
+    | '/about/'
+    | '/movies/'
+    | '/products/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/movies' | '/products'
-  id: '__root__' | '/' | '/about' | '/movies' | '/products'
+  to: '/' | '/NotFound' | '/movies/$id' | '/about' | '/movies' | '/products'
+  id:
+    | '__root__'
+    | '/'
+    | '/NotFound'
+    | '/movies/$id'
+    | '/about/'
+    | '/movies/'
+    | '/products/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  MoviesRoute: typeof MoviesRoute
-  ProductsRoute: typeof ProductsRoute
+  NotFoundRoute: typeof NotFoundRoute
+  MoviesIdRoute: typeof MoviesIdRoute
+  AboutIndexRoute: typeof AboutIndexRoute
+  MoviesIndexRoute: typeof MoviesIndexRoute
+  ProductsIndexRoute: typeof ProductsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/products': {
-      id: '/products'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof ProductsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/movies': {
-      id: '/movies'
-      path: '/movies'
-      fullPath: '/movies'
-      preLoaderRoute: typeof MoviesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/NotFound': {
+      id: '/NotFound'
+      path: '/NotFound'
+      fullPath: '/NotFound'
+      preLoaderRoute: typeof NotFoundRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -99,14 +118,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/products/': {
+      id: '/products/'
+      path: '/products'
+      fullPath: '/products/'
+      preLoaderRoute: typeof ProductsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movies/': {
+      id: '/movies/'
+      path: '/movies'
+      fullPath: '/movies/'
+      preLoaderRoute: typeof MoviesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about/': {
+      id: '/about/'
+      path: '/about'
+      fullPath: '/about/'
+      preLoaderRoute: typeof AboutIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movies/$id': {
+      id: '/movies/$id'
+      path: '/movies/$id'
+      fullPath: '/movies/$id'
+      preLoaderRoute: typeof MoviesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  MoviesRoute: MoviesRoute,
-  ProductsRoute: ProductsRoute,
+  NotFoundRoute: NotFoundRoute,
+  MoviesIdRoute: MoviesIdRoute,
+  AboutIndexRoute: AboutIndexRoute,
+  MoviesIndexRoute: MoviesIndexRoute,
+  ProductsIndexRoute: ProductsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,13 +1,15 @@
 import ContainerLayout from "#/components/ContainerLayout";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/")({ component: App });
+export const Route = createFileRoute("/about/")({
+  component: AboutComponent,
+});
 
-function App() {
+function AboutComponent() {
   return (
     <ContainerLayout>
       <section className="flex flex-col items-start gap-6">
-        <p>Home Page</p>
+        <p>About Page</p>
         <h1 className="text-xl lg:text-5xl title">
           A small starter with room to grow.
         </h1>

@@ -10,12 +10,13 @@ import {
 } from "@tanstack/react-query";
 import type { Products } from "type";
 import { toast } from "sonner";
+import ContainerLayout from "#/components/ContainerLayout";
 
-export const Route = createFileRoute("/products")({
-  component: RouteComponent,
+export const Route = createFileRoute("/products/")({
+  component: ProductsComponent,
 });
 
-function RouteComponent() {
+function ProductsComponent() {
   const queryClient = useQueryClient();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -47,37 +48,37 @@ function RouteComponent() {
   });
 
   return (
-    <div className="flex flex-col gap-4 relative">
-      <div className="flex gap-4">
-        <Button
-          variant="outline"
-          onClick={() =>
-            mutation.mutate({
-              product: {
-                id: Date.now(),
-                title: "New Product",
-                body: "This is a new product.",
-              },
-            })
-          }
-        >
-          Add Product
-        </Button>
-      </div>
-
-      {data?.pages.map((page, i) => (
-        <div className="flex flex-col gap-4" key={i}>
-          {page.map((product: Products) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+    <ContainerLayout>
+      <div className="flex flex-col gap-4 relative">
+        <div className="flex gap-4">
+          <Button
+            variant="outline"
+            onClick={() =>
+              mutation.mutate({
+                product: {
+                  id: Date.now(),
+                  title: "New Product",
+                  body: "This is a new product.",
+                },
+              })
+            }
+          >
+            Add Product
+          </Button>
         </div>
-      ))}
-
-      {hasNextPage && (
-        <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-          {isFetchingNextPage ? "Loading..." : "Load more"}
-        </Button>
-      )}
-    </div>
+        {data?.pages.map((page, i) => (
+          <div className="flex flex-col gap-4" key={i}>
+            {page.map((product: Products) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        ))}
+        {hasNextPage && (
+          <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
+            {isFetchingNextPage ? "Loading..." : "Load more"}
+          </Button>
+        )}
+      </div>
+    </ContainerLayout>
   );
 }
