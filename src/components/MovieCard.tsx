@@ -10,11 +10,19 @@ export default function MovieCard({ movie }: { movie: Movie }) {
       params={{ id: movie.id.toString() }}
       className="shadow-xl border border-gray-100 rounded-2xl flex flex-col gap-4"
     >
-      <img
-        src={getImageUrl(movie.poster_path)}
-        alt={movie.title}
-        className="w-full h-48 object-cover rounded-2xl shadow-lg"
-      />
+      {movie.poster_path ? (
+        <img
+          src={getImageUrl(movie.poster_path)}
+          alt={movie.title}
+          className="w-full h-48 object-cover rounded-2xl shadow-lg"
+        />
+      ) : (
+        <div className="w-full h-48 bg-gray-300 flex items-center justify-center rounded-2xl">
+          <span className="text-2xl font-bold text-gray-700">
+            {movie.title}
+          </span>
+        </div>
+      )}
       <div className="p-4 flex flex-col gap-2">
         <h2 className="text-xl">{movie.title}</h2>
         <div className="flex items-center justify-between">

@@ -7,29 +7,45 @@ import { Star } from "lucide-react";
 
 export default function MovieIdCard({ movie }: { movie: Movie }) {
   return (
-    <div className="relative">
-      <img
-        src={
-          movie.poster_path
-            ? getImageUrl(movie.poster_path)
-            : "/placeholder.png"
-        }
-        alt={movie.title}
-        className="w-full h-75 object-cover brightness-20 hidden lg:block z-10"
-        loading="lazy"
-        fetchPriority="low"
-      />
-      <img
-        src={
-          movie.poster_path
-            ? getImageUrl(movie.poster_path)
-            : "/placeholder.png"
-        }
-        alt={movie.title}
-        className="w-full lg:w-75 p-4 lg:p-0 h-auto object-cover lg:absolute lg:top-20 lg:left-20 rounded-lg lg:shadow-lg"
-        loading="lazy"
-        fetchPriority="high"
-      />
+    <div className="relative mt-20">
+      {movie.backdrop_path ? (
+        <img
+          src={
+            movie.backdrop_path
+              ? getImageUrl(movie.backdrop_path)
+              : "/placeholder.png"
+          }
+          alt={movie.title}
+          className="w-full h-75 object-cover brightness-30 hidden lg:block z-10"
+          loading="lazy"
+          fetchPriority="low"
+        />
+      ) : (
+        <div className="w-full h-48 bg-gray-900 flex items-center justify-center">
+          <span className="text-2xl font-bold text-gray-700">
+            {movie.title}
+          </span>
+        </div>
+      )}
+      {movie.poster_path ? (
+        <img
+          src={
+            movie.poster_path
+              ? getImageUrl(movie.poster_path)
+              : "/placeholder.png"
+          }
+          alt={movie.title}
+          className="w-full lg:w-75 p-4 lg:p-0 h-auto object-cover lg:absolute lg:top-20 lg:left-20 rounded-lg lg:shadow-lg"
+          loading="lazy"
+          fetchPriority="high"
+        />
+      ) : (
+        <div className="w-full lg:w-75 p-4 lg:p-0 h-86 object-cover lg:absolute lg:top-20 lg:left-20 rounded-lg lg:shadow-lg bg-gray-200 flex items-center justify-center">
+          <span className="text-2xl font-bold text-gray-700">
+            {movie.title}
+          </span>
+        </div>
+      )}
       <ContainerLayout>
         <div className="lg:ml-80 flex flex-col gap-4">
           <h2 className="text-4xl font-bold title tracking-wide">

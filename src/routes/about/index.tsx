@@ -8,7 +8,7 @@ export const Route = createFileRoute("/about/")({
 function AboutComponent() {
   return (
     <ContainerLayout>
-      <section className="flex flex-col items-start gap-6">
+      <section className="flex flex-col items-start gap-6 mt-20">
         <p>About Page</p>
         <h1 className="text-xl lg:text-5xl title">
           A small starter with room to grow.

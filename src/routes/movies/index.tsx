@@ -6,6 +6,8 @@ import { fetchMovies } from "#/queries/fetMovies";
 import type { Movie } from "type";
 import { queryClient } from "#/helper/queryClient";
 import ContainerLayout from "#/components/ContainerLayout";
+import Hero from "#/components/Hero";
+import { Button } from "#/components/ui/button";
 
 export const Route = createFileRoute("/movies/")({
   loader: async () => {
@@ -33,30 +35,40 @@ function RouteComponent() {
     });
 
   return (
-    <ContainerLayout>
-      {data?.pages.map((page, index) => (
-        <div
-          className="grid md:grid-cols-3 gap-3 lg:grid-cols-4 xl:grid-cols-4"
-          key={index}
-        >
-          {page.map((movie: any) => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </div>
-      ))}
-      <div className="flex justify-center mt-4">
-        {hasNextPage ? (
-          <button
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-            className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
-          >
-            {isFetchingNextPage ? "Loading more..." : "Load More"}
-          </button>
-        ) : (
-          <p>No more movies to load.</p>
-        )}
+    <>
+      <div className="relative">
+        <Hero height="md:h-45" />
+        <p className="title text-white text-4xl lg:text-6xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          Movies
+        </p>
       </div>
-    </ContainerLayout>
+      <ContainerLayout>
+        <div className="mt-20">
+          {data?.pages.map((page, index) => (
+            <div
+              className="grid md:grid-cols-3 gap-3 lg:grid-cols-4 xl:grid-cols-4"
+              key={index}
+            >
+              {page.map((movie: any) => (
+                <MovieCard key={movie.id} movie={movie} />
+              ))}
+            </div>
+          ))}
+          <div className="flex justify-center mt-4">
+            {hasNextPage ? (
+              <Button
+                onClick={() => fetchNextPage()}
+                disabled={isFetchingNextPage}
+                variant={"secondary"}
+              >
+                {isFetchingNextPage ? "Loading more..." : "Load More"}
+              </Button>
+            ) : (
+              <p>No more movies to load.</p>
+            )}
+          </div>
+        </div>
+      </ContainerLayout>
+    </>
   );
 }
