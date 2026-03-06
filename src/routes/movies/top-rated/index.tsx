@@ -3,36 +3,35 @@ import Hero from "#/components/Hero";
 import MovieCard from "#/components/MovieCard";
 import { Button } from "#/components/ui/button";
 import { queryClient } from "#/helper/queryClient";
-import { fetchAllMovies } from "#/queries/fetMovies";
+import { fetchMovies } from "#/queries/fetMovies";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import type { Movie } from "type";
 
-export const Route = createFileRoute("/movies/")({
+export const Route = createFileRoute("/movies/top-rated/")({
   loader: async () => {
     // Prefetch the first page into React Query cache
     await queryClient.prefetchInfiniteQuery({
-      queryKey: ["movies"],
-      queryFn: fetchAllMovies,
+      queryKey: ["top-rated-movies"],
+      queryFn: ({ pageParam }) => fetchMovies({ pageParam, type: "top_rated" }),
       initialPageParam: 1,
       getNextPageParam: (lastPage: Movie[], allPages: Movie[][]) =>
         lastPage.length === 0 ? undefined : allPages.length + 1,
     });
     return {}; // loader must return something, even empty
   },
-  component: RouteComponent,
+  component: PopularMovieComponent,
 });
 
-function RouteComponent() {
+function PopularMovieComponent() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ["movies"],
-      queryFn: fetchAllMovies,
+      queryKey: ["top-rated-movies"],
+      queryFn: ({ pageParam }) => fetchMovies({ pageParam, type: "top_rated" }),
       initialPageParam: 1,
       getNextPageParam: (lastPage, allPages) =>
         lastPage.length === 0 ? undefined : allPages.length + 1,
     });
-
   return (
     <>
       <div className="relative">
@@ -40,7 +39,7 @@ function RouteComponent() {
           <Hero height="md:h-45" />
         </div>
         <p className="hidden md:block title text-white text-4xl lg:text-6xl md:absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          Movies
+          Top Rated Movies
         </p>
       </div>
       <ContainerLayout>

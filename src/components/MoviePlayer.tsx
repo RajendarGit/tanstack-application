@@ -5,7 +5,7 @@ import { useRef } from "react";
 export default function MoviePlayer({ src }: { src: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   return (
-    <div className="relative">
+    <div className="relative z-50">
       <video
         ref={videoRef}
         src={src}

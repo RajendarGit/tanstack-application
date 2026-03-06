@@ -21,6 +21,7 @@ function App() {
               ones with ease. Your next movie night starts here.
             </p>
           </section>
+          <section>popular movies content</section>
         </ContainerLayout>
       </div>
     </div>
