@@ -16,8 +16,8 @@ export default function MovieCreditCard({
   const cast = castPages.flat();
 
   return (
-    <div className="container">
-      <h2 className="text-2xl font-bold mb-4">Cast & Crew</h2>
+    <div className="container py-20">
+      <h2 className="text-2xl font-bold mb-4">Cast &amp; Crew</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {cast.map((c) => (
           <div key={c.id} className="flex flex-col items-center">

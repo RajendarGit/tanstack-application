@@ -8,7 +8,7 @@ export default function MovieCard({ movie }: { movie: Movie }) {
     <Link
       to="/movies/$id"
       params={{ id: movie.id.toString() }}
-      className="shadow-xl border border-gray-100 rounded-2xl flex flex-col gap-4"
+      className="shadow-xl border border-gray-100 rounded-2xl flex flex-col gap-4 mb-4"
     >
       {movie.poster_path ? (
         <img
@@ -28,7 +28,9 @@ export default function MovieCard({ movie }: { movie: Movie }) {
         <div className="flex items-center justify-between">
           <p>{movie.release_date}</p>
           <p className="text-2xl text-amber-600 font-bold">
-            {roundToOneDecimal(movie.vote_average)}
+            {movie.vote_average === 0
+              ? "N/A"
+              : roundToOneDecimal(movie.vote_average)}
           </p>
         </div>
 

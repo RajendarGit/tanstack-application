@@ -37,13 +37,15 @@ function RouteComponent() {
   return (
     <>
       <div className="relative">
-        <Hero height="md:h-45" />
-        <p className="title text-white text-4xl lg:text-6xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="hidden md:block">
+          <Hero height="md:h-45" />
+        </div>
+        <p className="hidden md:block title text-white text-4xl lg:text-6xl md:absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           Movies
         </p>
       </div>
       <ContainerLayout>
-        <div className="mt-20">
+        <div className="mt-20 md:mt-0">
           {data?.pages.map((page, index) => (
             <div
               className="grid md:grid-cols-3 gap-3 lg:grid-cols-4 xl:grid-cols-4"
