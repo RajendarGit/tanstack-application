@@ -1,16 +1,13 @@
-import ContainerLayout from "#/components/ContainerLayout";
-import Hero from "#/components/Hero";
-import MovieCard from "#/components/MovieCard";
-import { Button } from "#/components/ui/button";
+// routes/movies/popular.tsx
 import { queryClient } from "#/helper/queryClient";
 import { fetchMovies } from "#/queries/fetMovies";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import MovieContent from "#/components/MovieContent";
 import type { Movie } from "type";
+import Hero from "#/components/Hero";
 
 export const Route = createFileRoute("/movies/popular/")({
   loader: async () => {
-    // Prefetch the first page into React Query cache
     await queryClient.prefetchInfiniteQuery({
       queryKey: ["popular-movies"],
       queryFn: ({ pageParam }) => fetchMovies({ pageParam, type: "popular" }),
@@ -18,20 +15,12 @@ export const Route = createFileRoute("/movies/popular/")({
       getNextPageParam: (lastPage: Movie[], allPages: Movie[][]) =>
         lastPage.length === 0 ? undefined : allPages.length + 1,
     });
-    return {}; // loader must return something, even empty
+    return {};
   },
-  component: PopularMovieComponent,
+  component: MovieContentWrapper,
 });
 
-function PopularMovieComponent() {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["popular-movies"],
-      queryFn: ({ pageParam }) => fetchMovies({ pageParam, type: "popular" }),
-      initialPageParam: 1,
-      getNextPageParam: (lastPage, allPages) =>
-        lastPage.length === 0 ? undefined : allPages.length + 1,
-    });
+function MovieContentWrapper() {
   return (
     <>
       <div className="relative">
@@ -42,33 +31,7 @@ function PopularMovieComponent() {
           Popular Movies
         </p>
       </div>
-      <ContainerLayout>
-        <div className="mt-20 md:mt-0">
-          {data?.pages.map((page, index) => (
-            <div
-              className="grid md:grid-cols-3 gap-3 lg:grid-cols-4 xl:grid-cols-4"
-              key={index}
-            >
-              {page.map((movie: any) => (
-                <MovieCard key={movie.id} movie={movie} />
-              ))}
-            </div>
-          ))}
-          <div className="flex justify-center mt-4">
-            {hasNextPage ? (
-              <Button
-                onClick={() => fetchNextPage()}
-                disabled={isFetchingNextPage}
-                variant={"secondary"}
-              >
-                {isFetchingNextPage ? "Loading more..." : "Load More"}
-              </Button>
-            ) : (
-              <p>No more movies to load.</p>
-            )}
-          </div>
-        </div>
-      </ContainerLayout>
+      <MovieContent type="popular" queryKey={["popular-movies"]} />
     </>
   );
 }
